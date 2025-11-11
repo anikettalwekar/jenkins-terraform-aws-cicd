@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        AWS_ACCESS_KEY_ID     = AKIAUHLT6FP6LUXPGYUL('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = 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('AWS_SECRET_ACCESS_KEY')
-    }
-
     stages {
 
         stage('Checkout Code') {
@@ -63,7 +58,6 @@ pipeline {
             }
         }
 
-        // ✅ Added Destroy stage correctly inside stages block
         stage('Terraform Destroy') {
             steps {
                 echo '🧹 Destroying Terraform-managed infrastructure...'
@@ -83,5 +77,4 @@ pipeline {
         }
     }
 }
-
 
