@@ -53,6 +53,21 @@ pipeline {
         failure {
             echo "❌ Build failed. Check console output."
         }
+
     }
+
+    stage('Terraform Destroy') {
+    steps {
+        echo '🧹 Destroying Terraform-managed infrastructure...'
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                          credentialsId: 'AWS_ACCESS_KEY_ID']]) {
+            sh '''
+                cd terraform
+                terraform destroy -auto-approve
+            '''
+        }
+    }
+}
+
 }
 
