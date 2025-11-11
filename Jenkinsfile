@@ -5,14 +5,14 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                echo '📦 Checking out repository...'
+                echo 'Checking out repository...'
                 git branch: 'main', url: 'https://github.com/anikettalwekar/jenkins-terraform-aws-cicd.git'
             }
         }
 
         stage('Terraform Init') {
             steps {
-                echo '⚙️ Initializing Terraform...'
+                echo 'Initializing Terraform...'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
                     sh '''
                         cd terraform
@@ -24,7 +24,7 @@ pipeline {
 
         stage('Terraform Validate') {
             steps {
-                echo '🧩 Validating Terraform...'
+                echo 'Validating Terraform configuration...'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
                     sh '''
                         cd terraform
@@ -36,7 +36,7 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                echo '📝 Planning Terraform...'
+                echo 'Creating Terraform plan...'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
                     sh '''
                         cd terraform
@@ -48,7 +48,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                echo '🚀 Applying Terraform...'
+                echo 'Applying Terraform configuration...'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
                     sh '''
                         cd terraform
@@ -60,7 +60,8 @@ pipeline {
 
         stage('Terraform Destroy') {
             steps {
-                echo '🧹 Destroying Terraform-managed infrastructure...'
+                input message: 'Confirm Terraform Destroy?', ok: 'Yes, Destroy'
+                echo 'Destroying Terraform-managed infrastructure...'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
                     sh '''
                         cd terraform
@@ -73,7 +74,7 @@ pipeline {
 
     post {
         always {
-            echo '✅ Pipeline finished — cleanup complete.'
+            echo 'Pipeline execution complete.'
         }
     }
 }
