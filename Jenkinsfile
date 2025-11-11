@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        AWS_ACCESS_KEY_ID     = AKIAUHLT6FP6LUXPGYUL('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = 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('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION     = 'ap-south-1'
+    }
+
     stages {
 
         stage('Checkout Code') {
@@ -13,48 +19,40 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 echo 'Initializing Terraform...'
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
-                    sh '''
-                        cd terraform
-                        terraform init
-                    '''
-                }
+                sh '''
+                    cd terraform
+                    terraform init
+                '''
             }
         }
 
         stage('Terraform Validate') {
             steps {
                 echo 'Validating Terraform configuration...'
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
-                    sh '''
-                        cd terraform
-                        terraform validate
-                    '''
-                }
+                sh '''
+                    cd terraform
+                    terraform validate
+                '''
             }
         }
 
         stage('Terraform Plan') {
             steps {
                 echo 'Creating Terraform plan...'
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
-                    sh '''
-                        cd terraform
-                        terraform plan -out=tfplan
-                    '''
-                }
+                sh '''
+                    cd terraform
+                    terraform plan -out=tfplan
+                '''
             }
         }
 
         stage('Terraform Apply') {
             steps {
                 echo 'Applying Terraform configuration...'
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
-                    sh '''
-                        cd terraform
-                        terraform apply -auto-approve tfplan
-                    '''
-                }
+                sh '''
+                    cd terraform
+                    terraform apply -auto-approve tfplan
+                '''
             }
         }
 
@@ -62,12 +60,10 @@ pipeline {
             steps {
                 input message: 'Confirm Terraform Destroy?', ok: 'Yes, Destroy'
                 echo 'Destroying Terraform-managed infrastructure...'
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS_KEY_ID']]) {
-                    sh '''
-                        cd terraform
-                        terraform destroy -auto-approve
-                    '''
-                }
+                sh '''
+                    cd terraform
+                    terraform destroy -auto-approve
+                '''
             }
         }
     }
