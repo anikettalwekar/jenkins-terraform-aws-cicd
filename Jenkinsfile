@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
+        AWS_ACCESS_KEY_ID     = AKIAUHLT6FP6LUXPGYUL('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = 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('AWS_ACCESS_KEY_ID')
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                echo "Ì≥¶ Checking out repository..."
+                echo "ÔøΩÔøΩÔøΩ Checking out repository..."
                 git branch: 'main', url: 'https://github.com/anikettalwekar/jenkins-terraform-aws-cicd.git'
             }
         }
@@ -23,21 +23,21 @@ pipeline {
 
         stage('Validate Terraform') {
             steps {
-                echo "Ì∑© Validating Terraform code..."
+                echo "ÔøΩÔøΩÔøΩ Validating Terraform code..."
                 sh 'cd terraform && terraform validate'
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                echo "Ì≥ù Generating Terraform plan..."
+                echo "ÔøΩÔøΩÔøΩ Generating Terraform plan..."
                 sh 'cd terraform && terraform plan -out=tfplan'
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                echo "Ì∫Ä Applying Terraform changes..."
+                echo "ÔøΩÔøΩÔøΩ Applying Terraform changes..."
                 sh 'cd terraform && terraform apply -auto-approve tfplan'
             }
         }
