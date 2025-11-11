@@ -43,8 +43,8 @@ resource "aws_security_group" "jenkins_sg" {
 }
 
 resource "aws_instance" "demo_server" {
-  ami                    = "ami-0c55b159cbfafe1f0"
-  instance_type          = "t2.micro"
+  ami                    = "ami-087d1c9a513324697"
+  instance_type          = "t2.medium"
   key_name               = var.key_name
   subnet_id              = aws_subnet.main_subnet.id
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
